@@ -1,3 +1,65 @@
+/* reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+:root {
+  line-height: 1.5;
+}
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
 body {
-  background-color: rebeccapurple;
+  background-color: rgb(173, 176, 179);
+}
+/* app */
+.app {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 200px 1fr;
+  grid-template-areas:
+    'sidebar topbar topbar topbar topbar'
+    'sidebar content content content content';
+  height: 100vh;
+}
+/* topbar */
+.topbar {
+  grid-area: topbar;
+  background-color: rgb(109, 51, 51);
+}
+/* sidebar */
+.sidebar {
+  grid-area: sidebar;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  background-color: rgb(243, 255, 251);
+}
+.project-list {
+  max-height: 580px;
+  overflow-y: auto;
+}
+/* content */
+.content {
+  grid-area: content;
+  margin: 10px;
+  background-color: rgb(255, 246, 235);
 }
