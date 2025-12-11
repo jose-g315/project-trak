@@ -7,11 +7,11 @@ import {
   editProject,
 } from './projects';
 import {
-  renderProjects,
   renderProjectBanner,
   changeProjectLi,
   renderEditForm,
   toggleEditForm,
+  renderProjectLi,
 } from './dom';
 
 const input = document.getElementById('quickProject');
@@ -29,46 +29,52 @@ function handleAddProjectClick(e) {
   e.preventDefault();
   const projectName = input.value.trim();
   if (projectName) {
-    addProject(projectName);
-    form.reset();
+    const addedProject = addProject(projectName);
+    renderProjectLi(addedProject);
     console.table(listProjects());
-    renderProjects(listProjects());
+    form.reset();
   }
 }
 function handleProjectListClick(e) {
   const projectId = e.target.dataset.id;
   setCurrentProject(projectId);
   renderProjectBanner(getCurrentProject());
-  console.log(projectId);
+  console.table(listProjects());
 }
 function handleProjectBannerClick(e) {
   const button = e.target.closest('button');
-
   if (!button) return;
+
   const action = button.dataset.action;
-  if (action === 'edit') {
-    renderEditForm();
-  } else if (action === 'delete') {
-    const deletedLi = deleteProject();
-    changeProjectLi(deletedLi, action);
-    console.log('Delete clicked');
-    renderProjectBanner(getCurrentProject());
-  } else if (action === 'cancel') {
-    e.preventDefault();
-    toggleEditForm();
-  } else if (action == 'accept') {
-    const input = document.querySelector('.newNameInput');
-    e.preventDefault();
-    if (!input.checkValidity()) {
-      input.reportValidity();
-      return;
+  switch (action) {
+    case 'edit':
+      renderEditForm();
+      break;
+    case 'delete': {
+      const deletedProject = deleteProject();
+      changeProjectLi(deletedProject, action);
+      console.table(listProjects());
+      renderProjectBanner(getCurrentProject());
+      break;
     }
-    input.required = true;
-    const newName = input.value.trim();
-    const editedLi = editProject(newName);
-    changeProjectLi(editedLi, action, newName);
-    toggleEditForm();
-    renderProjectBanner(getCurrentProject());
+    case 'cancel':
+      e.preventDefault();
+      toggleEditForm();
+      break;
+    case 'accept': {
+      const input = document.querySelector('.newNameInput');
+      e.preventDefault();
+      if (!input.checkValidity()) {
+        input.reportValidity();
+        return;
+      }
+      const newName = input.value.trim();
+      const editedProject = editProject(newName);
+      changeProjectLi(editedProject, action, newName);
+      toggleEditForm();
+      renderProjectBanner(getCurrentProject());
+      console.table(listProjects());
+    }
   }
 }
 export { bindEvents };

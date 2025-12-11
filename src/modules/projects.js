@@ -17,38 +17,30 @@ function getCurrentProject() {
 function addProject(projectName) {
   let project = createProject(projectName);
   projects.push(project);
+  return project;
 }
 function editProject(newName) {
   const project = getCurrentProject();
   if (!project) return null;
-  const index = projects.findIndex((c) => c.projectId === project.projectId);
-  if (index !== -1) {
-    projects[index].projectName = newName;
-    return project.projectId;
-  }
+  project.projectName = newName;
+  return project;
 }
 function deleteProject() {
   const project = getCurrentProject();
   if (!project) return null;
 
-  const index = projects.findIndex((c) => c.projectId === project.projectId);
-  if (index !== -1) {
-    projects.splice(index, 1);
-    currentProjectId = null;
-    console.table(projects);
-    console.log(project.projectId + ' :deleted');
-    return project.projectId;
-  }
+  projects = projects.filter((c) => c.projectId !== project.projectId);
+  currentProjectId = null;
+  return project;
 }
 function listProjects() {
-  return projects;
+  return [...projects];
 }
 
 function initializeDefaultProject() {
   let project1 = createProject('My Project');
   projects.push(project1);
   setCurrentProject(project1.projectId);
-  console.log('Current Project:' + project1.projectId);
 }
 initializeDefaultProject();
 

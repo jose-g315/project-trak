@@ -1,18 +1,17 @@
-import { listProjects } from './projects';
+const list = document.querySelector('.projectList');
+const content = document.querySelector('.content');
+const banner = document.querySelector('.projectBanner');
 
-function renderProjects(projects) {
-  const projectList = document.querySelector('.projectList');
-  projectList.textContent = '';
+function renderProjectList(projects) {
+  list.textContent = '';
   projects.forEach((project) => {
     const projectCard = document.createElement('li');
     projectCard.dataset.id = project.projectId;
     projectCard.textContent = project.projectName;
-    projectList.appendChild(projectCard);
+    list.appendChild(projectCard);
   });
 }
 function renderProjectBanner(project) {
-  const content = document.querySelector('.content');
-  const banner = document.querySelector('.projectBanner');
   if (project) {
     banner.textContent = '';
     banner.textContent = project.projectName;
@@ -28,15 +27,27 @@ function renderProjectBanner(project) {
     banner.textContent = '';
   }
 }
+function renderProjectLi(project) {
+  const projectCard = document.createElement('li');
+  projectCard.dataset.id = project.projectId;
+  projectCard.textContent = project.projectName;
+  list.append(projectCard);
+}
+function changeProjectLi(project, action, name) {
+  const li = document.querySelector(`li[data-id="${project.projectId}"]`);
+  if (li && action === 'delete') {
+    li.remove();
+  } else if (li && action === 'accept') {
+    li.textContent = name;
+  }
+}
 function toggleEditForm() {
-  const banner = document.querySelector('.projectBanner');
   banner.lastChild.remove();
 }
 function renderEditForm() {
   const existingForm = document.querySelector('.editForm');
   if (existingForm) return;
 
-  const banner = document.querySelector('.projectBanner');
   const editForm = document.createElement('form');
   editForm.id = 'editForm';
   editForm.classList.add('editForm');
@@ -54,19 +65,10 @@ function renderEditForm() {
   editForm.append(input, acceptBtn, cancelBtn);
   banner.appendChild(editForm);
 }
-function changeProjectLi(projectId, action, name) {
-  const li = document.querySelector(`li[data-id="${projectId}"]`);
-  if (li && action === 'delete') {
-    li.remove();
-    console.log(`Removed project ${projectId} from list`);
-  } else if (li && action === 'accept') {
-    li.textContent = name;
-    console.table(listProjects());
-  }
-}
 
 export {
-  renderProjects,
+  renderProjectList,
+  renderProjectLi,
   renderProjectBanner,
   changeProjectLi,
   renderEditForm,
