@@ -6,6 +6,35 @@
     <title>Project Trak</title>
   </head>
   <body>
+    <dialog id="taskDialog">
+      <form method="dialog" class="taskForm">
+        <h2>Add Task</h2>
+        <label> Name:<input type="text" name="name" required /></label>
+        <label
+          >Description:<input type="text" name="description" required
+        /></label>
+        <label>Due Date:<input type="date" name="dueDate" required /></label>
+        <label>
+          <input type="radio" name="priority" value="low" checked />
+          Low
+        </label>
+        <label>
+          <input type="radio" name="priority" value="medium" />
+          Medium
+        </label>
+        <label>
+          <input type="radio" name="priority" value="high" />
+          High
+        </label>
+
+        <menu>
+          <button id="cancelTaskBtn" value="cancel" type="button">
+            Cancel
+          </button>
+          <button id="submitBtn" value="submit">Add</button>
+        </menu>
+      </form>
+    </dialog>
     <div class="app">
       <header class="topbar">
         <h1>Project Trak</h1>
@@ -25,6 +54,10 @@
       </div>
       <div class="content">
         <div class="projectBanner"></div>
+        <div class="taskContainer">
+          <div class="taskHeader"></div>
+          <table class="taskTable"></table>
+        </div>
       </div>
     </div>
   </body>

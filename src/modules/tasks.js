@@ -1,9 +1,16 @@
-function createTask(name, description, dueDate, priority, status) {
+function createTask({
+  name,
+  description,
+  dueDate,
+  priority,
+  status = 'pending',
+}) {
   return {
-    name,
-    description,
-    dueDate,
-    priority,
+    id: crypto.randomUUID(),
+    name: name,
+    description: description,
+    dueDate: dueDate,
+    priority: priority,
     status,
   };
 }

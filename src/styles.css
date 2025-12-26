@@ -65,3 +65,6 @@ body {
 }
 .projectBanner {
 }
+.taskCompleted {
+  text-decoration: line-through;
+}
