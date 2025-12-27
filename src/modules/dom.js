@@ -5,14 +5,18 @@ const table = document.querySelector('.taskTable');
 
 function renderContent(project) {
   if (project) {
+    highlightCurrentProject(project);
     renderProjectBanner(project);
     renderTaskHeader();
     renderTaskTable(project.tasks);
-  } else {
-    banner.textContent = '';
-    header.textContent = '';
-    table.textContent = '';
   }
+}
+function highlightCurrentProject(project) {
+  document.querySelectorAll('.projectList li').forEach((li) => {
+    li.classList.remove('current');
+  });
+  const li = document.querySelector(`li[data-id="${project.projectId}"]`);
+  li.classList.add('current');
 }
 function renderProjectList(projects) {
   list.textContent = '';
@@ -25,14 +29,17 @@ function renderProjectList(projects) {
 }
 function renderProjectBanner(project) {
   banner.textContent = '';
-  banner.textContent = project.projectName;
+  const bannerHeader = document.createElement('h1');
+  bannerHeader.textContent = project.projectName;
+  const btnDiv = document.createElement('div');
   const editBtn = document.createElement('button');
-  editBtn.textContent = 'Edit';
+  editBtn.textContent = 'Rename';
   editBtn.dataset.action = 'edit';
   const deleteBtn = document.createElement('button');
   deleteBtn.textContent = 'Delete';
   deleteBtn.dataset.action = 'delete';
-  banner.append(editBtn, deleteBtn);
+  btnDiv.append(editBtn, deleteBtn);
+  banner.append(bannerHeader, btnDiv);
 
   renderTaskHeader();
   renderTaskTable(project.tasks);
@@ -85,7 +92,7 @@ function renderTaskHeader() {
   header.textContent = '';
   const addTaskBtn = document.createElement('button');
   const taskHeader = document.createElement('div');
-  taskHeader.textContent = 'Hello';
+  taskHeader.textContent = 'Tasks';
   addTaskBtn.textContent = 'Add Task';
   addTaskBtn.dataset.action = 'add';
   header.append(taskHeader, addTaskBtn);
@@ -114,10 +121,15 @@ function renderTaskTable(tasks) {
   tasks.forEach((task) => {
     const row = document.createElement('tr');
     row.dataset.id = task.id;
+    // if task is completed
+    if (task.status === 'completed') {
+      row.classList.add('taskCompleted');
+    }
     const statusCell = document.createElement('td');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.classList.add('task-checkbox');
+    checkbox.checked = task.status === 'completed';
     statusCell.appendChild(checkbox);
     const nameCell = document.createElement('td');
     nameCell.textContent = task.name;
@@ -127,6 +139,8 @@ function renderTaskTable(tasks) {
     dueDateCell.textContent = task.dueDate;
     const priorityCell = document.createElement('td');
     priorityCell.textContent = task.priority;
+    priorityCell.classList.add(displayPriority(task.priority));
+    displayPriority(priorityCell.textContent);
     const actionCell = document.createElement('button');
     actionCell.textContent = 'Delete';
     actionCell.dataset.action = 'delete';
@@ -142,6 +156,23 @@ function renderTaskTable(tasks) {
     tableBody.appendChild(row);
   });
   table.appendChild(tableBody);
+}
+function displayPriority(priority) {
+  let className = '';
+  switch (priority) {
+    case 'High': {
+      className = 'high';
+      return className;
+    }
+    case 'Medium': {
+      className = 'medium';
+      return className;
+    }
+    case 'Low': {
+      className = 'low';
+      return className;
+    }
+  }
 }
 
 export {

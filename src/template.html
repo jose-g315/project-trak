@@ -11,21 +11,29 @@
         <h2>Add Task</h2>
         <label> Name:<input type="text" name="name" required /></label>
         <label
-          >Description:<input type="text" name="description" required
-        /></label>
+          >Description:<textarea
+            type="textarea"
+            name="description"
+            required
+          ></textarea>
+        </label>
         <label>Due Date:<input type="date" name="dueDate" required /></label>
-        <label>
-          <input type="radio" name="priority" value="low" checked />
-          Low
-        </label>
-        <label>
-          <input type="radio" name="priority" value="medium" />
-          Medium
-        </label>
-        <label>
-          <input type="radio" name="priority" value="high" />
-          High
-        </label>
+
+        <fieldset>
+          <legend>Priority</legend>
+          <label>
+            <input type="radio" name="priority" value="low" checked />
+            Low
+          </label>
+          <label>
+            <input type="radio" name="priority" value="medium" />
+            Medium
+          </label>
+          <label>
+            <input type="radio" name="priority" value="high" />
+            High
+          </label>
+        </fieldset>
 
         <menu>
           <button id="cancelTaskBtn" value="cancel" type="button">
@@ -40,10 +48,10 @@
         <h1>Project Trak</h1>
       </header>
       <div class="sidebar">
-        <h2>Projects</h2>
+        <h2 class="sideHeader">Projects</h2>
         <hr />
-        <h3>Add Project</h3>
-        <hr />
+        <h3 class="sideHeader">Add Project</h3>
+
         <form action="" id="projectForm">
           <input id="quickProject" placeholder="Project" required />
           <button id="addProjectBtn" class="btn" type="submit">Add</button>
@@ -54,6 +62,7 @@
       </div>
       <div class="content">
         <div class="projectBanner"></div>
+        <hr />
         <div class="taskContainer">
           <div class="taskHeader"></div>
           <table class="taskTable"></table>
