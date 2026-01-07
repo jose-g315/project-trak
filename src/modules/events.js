@@ -10,6 +10,7 @@ import {
   updateTaskStatus,
 } from './projects';
 import {
+  clearContent,
   renderContent,
   renderProjectBanner,
   changeProjectLi,
@@ -114,7 +115,9 @@ function handleProjectBannerClick(e) {
       const deletedProject = deleteProject();
       changeProjectLi(deletedProject, action);
       console.table(listProjects());
-      renderContent(getCurrentProject());
+      console.log(getCurrentProject());
+      //renderContent(getCurrentProject());
+      clearContent();
       break;
     }
     case 'cancel':

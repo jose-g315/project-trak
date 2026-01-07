@@ -3,12 +3,15 @@ const banner = document.querySelector('.projectBanner');
 const header = document.querySelector('.taskHeader');
 const table = document.querySelector('.taskTable');
 
+function clearContent() {
+  banner.textContent = 'Select/Add a Project';
+  header.textContent = '';
+  table.textContent = '';
+}
 function renderContent(project) {
   if (project) {
     highlightCurrentProject(project);
     renderProjectBanner(project);
-    renderTaskHeader();
-    renderTaskTable(project.tasks);
   }
 }
 function highlightCurrentProject(project) {
@@ -176,6 +179,7 @@ function displayPriority(priority) {
 }
 
 export {
+  clearContent,
   renderContent,
   renderProjectBanner,
   renderProjectList,
