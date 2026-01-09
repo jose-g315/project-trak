@@ -9,20 +9,25 @@
     <dialog id="taskDialog">
       <form method="dialog" class="taskForm">
         <h2>Add Task</h2>
-        <label> Name:<input type="text" name="name" required /></label>
+        <label>
+          Name:<input type="text" name="name" id="name" required
+        /></label>
         <label
           >Description:<textarea
             type="textarea"
             name="description"
+            id="description"
             required
           ></textarea>
         </label>
-        <label>Due Date:<input type="date" name="dueDate" required /></label>
+        <label
+          >Due Date:<input type="date" name="dueDate" id="dueDate" required
+        /></label>
 
         <fieldset>
           <legend>Priority</legend>
           <label>
-            <input type="radio" name="priority" value="Low" checked />
+            <input type="radio" name="priority" value="Low" />
             Low
           </label>
           <label>

@@ -182,6 +182,7 @@ function deleteTask(taskId) {
     saveData(projects);
   }
   console.table(project.tasks);
+  console.table(listProjects());
 }
 function updateTaskStatus(taskId, status) {
   const project = getCurrentProject();
@@ -194,6 +195,26 @@ function updateTaskStatus(taskId, status) {
     console.table(project.tasks);
   }
 }
+function editTask(taskId, newData) {
+  const project = getCurrentProject();
+  if (!project) throw new Error('Project not found');
+  const index = project.tasks.findIndex((task) => task.id === taskId);
+  if (index !== -1) {
+    project.tasks[index] = { ...project.tasks[index], ...newData };
+    console.log(project[index]);
+    saveData(projects);
+  }
+  // const task = project.tasks.find((t) => t.id === taskId);
+  // if (task) {
+  //   Object.assign(task, newData);
+  //   saveData(projects);
+  //   console.table(project.tasks);
+  // }
+}
+function getTaskById(taskId) {
+  const project = getCurrentProject();
+  return project.tasks.find((t) => t.id === taskId);
+}
 
 export {
   addProject,
@@ -205,4 +226,6 @@ export {
   addTask,
   deleteTask,
   updateTaskStatus,
+  editTask,
+  getTaskById,
 };

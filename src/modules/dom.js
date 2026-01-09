@@ -144,9 +144,14 @@ function renderTaskTable(tasks) {
     priorityCell.textContent = task.priority;
     priorityCell.classList.add(displayPriority(task.priority));
     displayPriority(priorityCell.textContent);
-    const actionCell = document.createElement('button');
-    actionCell.textContent = 'Delete';
-    actionCell.dataset.action = 'delete';
+    const actionCell = document.createElement('td');
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.dataset.action = 'edit';
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.dataset.action = 'delete';
+    actionCell.append(editBtn, deleteBtn);
 
     row.append(
       statusCell,

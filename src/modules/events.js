@@ -8,6 +8,8 @@ import {
   addTask,
   deleteTask,
   updateTaskStatus,
+  getTaskById,
+  editTask,
 } from './projects';
 import {
   clearContent,
@@ -19,6 +21,7 @@ import {
   renderProjectLi,
   removeTaskRow,
 } from './dom';
+import { fillForm } from './utility';
 
 const input = document.getElementById('quickProject');
 const form = document.getElementById('projectForm');
@@ -47,8 +50,24 @@ function handleTableClick(e) {
   const taskId = row.dataset.id;
 
   if (button) {
-    deleteTask(taskId);
-    removeTaskRow(taskId);
+    switch (button.dataset.action) {
+      case 'delete':
+        deleteTask(taskId);
+        removeTaskRow(taskId);
+        break;
+      case 'edit': {
+        // KEEP FIXING
+        const task = getTaskById(taskId);
+        dialog.dataset.mode = 'edit';
+        dialog.dataset.taskId = taskId;
+        if (task) {
+          console.log(task);
+          fillForm(task);
+          dialog.showModal();
+          break;
+        }
+      }
+    }
   }
   if (checkbox) {
     const isChecked = e.target.checked;
@@ -63,10 +82,18 @@ function handleTableClick(e) {
 function handleTaskSubmit(e) {
   e.preventDefault();
   console.log('Task added:', e.target.name.value);
+  // CLEAN UP
+  const mode = dialog.dataset.mode;
+  const taskId = dialog.dataset.taskId;
+  console.log('TASK ID : ', taskId);
   const formData = new FormData(e.target);
   const taskObj = Object.fromEntries(formData.entries());
-  let newTask = addTask(taskObj);
-  console.table(newTask);
+  if (mode === 'edit') {
+    editTask(taskId, taskObj);
+  } else if (mode === 'add') {
+    let newTask = addTask(taskObj);
+    console.table(newTask);
+  }
   taskForm.reset();
   dialog.close('submit');
   renderContent(getCurrentProject());
@@ -82,6 +109,7 @@ function handleHeaderClick(e) {
   if (!button) return;
   const action = button.dataset.action;
   if (action === 'add') {
+    dialog.dataset.mode = 'add';
     dialog.showModal();
   }
 }
