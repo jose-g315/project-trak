@@ -41,6 +41,7 @@ function renderProjectBanner(project) {
   const deleteBtn = document.createElement('button');
   deleteBtn.textContent = 'Delete';
   deleteBtn.dataset.action = 'delete';
+  deleteBtn.classList.add('deleteBtn');
   btnDiv.append(editBtn, deleteBtn);
   banner.append(bannerHeader, btnDiv);
 
@@ -131,6 +132,7 @@ function renderTaskTable(tasks) {
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.dataset.action = 'delete';
+    deleteBtn.classList.add('deleteBtn');
     actionCell.append(editBtn, deleteBtn);
 
     row.append(

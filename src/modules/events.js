@@ -95,6 +95,7 @@ function handleAddProjectClick(e) {
   if (projectName) {
     projectManager.addProject(projectName);
     domManager.renderProjectList(projectManager.listProjects());
+    domManager.renderContent(projectManager.getCurrentProject());
     form.reset();
   }
 }

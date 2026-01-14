@@ -22,6 +22,7 @@ function getCurrentProject() {
 function addProject(projectName) {
   let project = createProject(projectName);
   if (!project) return;
+  setCurrentProject(project.projectId);
   projects = [...projects, project];
   saveData(projects);
 }

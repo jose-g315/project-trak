@@ -12,7 +12,7 @@
 }
 :root {
   line-height: 1.5;
-  --primary: hsl(210, 29%, 24%);
+  --primary: hsl(210, 30%, 21%);
   --secondary: #3498db;
   --success: #27ae60;
   --warning: #e7bb08;
@@ -65,12 +65,18 @@ button {
   font-size: 0.8rem;
   margin: 5px;
   max-width: fit-content;
-  background-color: var(--secondary);
+  background-color: var(--primary);
   color: var(--text);
 }
 button:hover {
   transform: translate(0px, -1px);
-  background-color: var(--primary);
+  background-color: var(--secondary);
+}
+.deleteBtn {
+  background-color: var(--danger);
+}
+.deleteBtn:hover {
+  background-color: #70231b;
 }
 /* topbar */
 .topbar {
@@ -83,7 +89,7 @@ button:hover {
   color: var(--text);
 }
 /* sidebar */
-.current {
+.projectList > .current {
   background-color: var(--secondary);
 }
 .sidebar {
@@ -132,11 +138,13 @@ textarea:focus {
 .projectList > li {
   margin-top: 8px;
   border-radius: 5px;
-  border: 3px solid var(--primary);
+  /* border: 3px solid var(--primary); */
   padding-left: 10px;
+  background-color: var(--primary);
+  color: var(--text);
 }
 .projectList > li:hover {
-  background-color: hsl(204, 70%, 75%);
+  background-color: var(--secondary);
 }
 /* content */
 .content {
