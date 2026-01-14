@@ -47,26 +47,6 @@ function renderProjectBanner(project) {
   renderTaskHeader();
   renderTaskTable(project.tasks);
 }
-function renderProjectLi(project) {
-  const projectCard = document.createElement('li');
-  projectCard.dataset.id = project.projectId;
-  projectCard.textContent = project.projectName;
-  list.append(projectCard);
-}
-function changeProjectLi(project, action, name) {
-  const li = document.querySelector(`li[data-id="${project.projectId}"]`);
-  if (li && action === 'delete') {
-    li.remove();
-  } else if (li && action === 'accept') {
-    li.textContent = name;
-  }
-}
-function removeTaskRow(taskId) {
-  const row = document.querySelector(`tr[data-id="${taskId}"]`);
-  if (row) {
-    row.remove();
-  }
-}
 function toggleEditForm() {
   banner.lastChild.remove();
 }
@@ -188,9 +168,6 @@ export {
   renderContent,
   renderProjectBanner,
   renderProjectList,
-  renderProjectLi,
-  changeProjectLi,
   renderEditForm,
   toggleEditForm,
-  removeTaskRow,
 };

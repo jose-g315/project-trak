@@ -22,16 +22,18 @@ function getCurrentProject() {
 function addProject(projectName) {
   let project = createProject(projectName);
   if (!project) return;
-  projects.push(project);
+  projects = [...projects, project];
   saveData(projects);
-  return project;
 }
-function editProject(newName) {
-  const project = getCurrentProject();
-  if (!project) return;
-  project.projectName = newName;
+function editProject(newProject) {
+  const currentProject = getCurrentProject();
+  if (!currentProject) return;
+  projects = projects.map((project) =>
+    project.projectId === currentProject.projectId
+      ? { ...project, ...newProject }
+      : project
+  );
   saveData(projects);
-  return project;
 }
 function deleteProject() {
   const project = getCurrentProject();
@@ -39,11 +41,9 @@ function deleteProject() {
   projects = projects.filter((p) => p.projectId !== project.projectId);
   currentProjectId = null;
   saveData(projects);
-  return project;
 }
 function listProjects() {
-  // shallow clone of each object so it can't be mutated
-  return projects.map((p) => ({ ...p }));
+  return projects.map((projects) => ({ ...projects }));
 }
 function initializeDefaultProject() {
   if (projects.length === 0) {
@@ -76,9 +76,8 @@ function addTask(task) {
   const project = getCurrentProject();
   if (!project) return;
   let newTask = createTask(task);
-  project.tasks.push(newTask);
+  project.tasks = [...project.tasks, newTask];
   saveData(projects);
-  return newTask;
 }
 function deleteTask(taskId) {
   const project = getCurrentProject();
@@ -89,21 +88,15 @@ function deleteTask(taskId) {
     saveData(projects);
   }
 }
-function updateTaskStatus(taskId, status) {
-  const project = getCurrentProject();
-  if (!project) return;
-  const task = getTaskById(taskId);
-  if (task) {
-    task.status = status;
-    saveData(projects);
-  }
-}
 function editTask(taskId, newData) {
   const project = getCurrentProject();
   if (!project) return;
-  const task = getTaskById(taskId);
+  let task = getTaskById(taskId);
   if (task) {
-    Object.assign(task, newData);
+    let updatedTask = { ...task, ...newData };
+    project.tasks = project.tasks.map((task) =>
+      task.id === taskId ? updatedTask : task
+    );
     saveData(projects);
   }
 }
@@ -122,8 +115,6 @@ export {
   editProject,
   addTask,
   deleteTask,
-  updateTaskStatus,
   editTask,
   getTaskById,
 };
-// Refactoring complete go to dom.js next and also check to see what other module uses gettaskbyId.

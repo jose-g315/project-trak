@@ -1,26 +1,5 @@
-import {
-  addProject,
-  listProjects,
-  setCurrentProject,
-  getCurrentProject,
-  deleteProject,
-  editProject,
-  addTask,
-  deleteTask,
-  updateTaskStatus,
-  getTaskById,
-  editTask,
-} from './projects';
-import {
-  clearContent,
-  renderContent,
-  renderProjectBanner,
-  changeProjectLi,
-  renderEditForm,
-  toggleEditForm,
-  renderProjectLi,
-  removeTaskRow,
-} from './dom';
+import * as projectManager from './projects';
+import * as domManager from './dom';
 import { fillForm } from './utility';
 
 const input = document.getElementById('quickProject');
@@ -52,16 +31,14 @@ function handleTableClick(e) {
   if (button) {
     switch (button.dataset.action) {
       case 'delete':
-        deleteTask(taskId);
-        removeTaskRow(taskId);
+        projectManager.deleteTask(taskId);
+        domManager.renderProjectBanner(projectManager.getCurrentProject());
         break;
       case 'edit': {
-        // KEEP FIXING
-        const task = getTaskById(taskId);
+        const task = projectManager.getTaskById(taskId);
         dialog.dataset.mode = 'edit';
         dialog.dataset.taskId = taskId;
         if (task) {
-          console.log(task);
           fillForm(task);
           dialog.showModal();
           break;
@@ -71,7 +48,10 @@ function handleTableClick(e) {
   }
   if (checkbox) {
     const isChecked = e.target.checked;
-    updateTaskStatus(taskId, isChecked ? 'completed' : 'pending');
+    projectManager.editTask(
+      taskId,
+      isChecked ? { status: 'completed' } : { status: 'pending' }
+    );
     if (isChecked) {
       row.classList.add('taskCompleted');
     } else {
@@ -81,26 +61,21 @@ function handleTableClick(e) {
 }
 function handleTaskSubmit(e) {
   e.preventDefault();
-  console.log('Task added:', e.target.name.value);
-  // CLEAN UP
   const mode = dialog.dataset.mode;
   const taskId = dialog.dataset.taskId;
-  console.log('TASK ID : ', taskId);
   const formData = new FormData(e.target);
   const taskObj = Object.fromEntries(formData.entries());
   if (mode === 'edit') {
-    editTask(taskId, taskObj);
+    projectManager.editTask(taskId, taskObj);
   } else if (mode === 'add') {
-    let newTask = addTask(taskObj);
-    console.table(newTask);
+    projectManager.addTask(taskObj);
   }
   taskForm.reset();
   dialog.close('submit');
-  renderContent(getCurrentProject());
+  domManager.renderContent(projectManager.getCurrentProject());
 }
 function handleCancelTaskForm() {
   taskForm.reset();
-  console.log('closed');
   dialog.close('cancel');
 }
 
@@ -118,17 +93,16 @@ function handleAddProjectClick(e) {
   e.preventDefault();
   const projectName = input.value.trim();
   if (projectName) {
-    const addedProject = addProject(projectName);
-    renderProjectLi(addedProject);
-    console.table(listProjects());
+    projectManager.addProject(projectName);
+    domManager.renderProjectList(projectManager.listProjects());
     form.reset();
   }
 }
 function handleProjectListClick(e) {
   const projectId = e.target.dataset.id;
-  setCurrentProject(projectId);
-  renderContent(getCurrentProject());
-  console.table(listProjects());
+  projectManager.setCurrentProject(projectId);
+  domManager.renderContent(projectManager.getCurrentProject());
+  console.table(projectManager.listProjects());
 }
 function handleProjectBannerClick(e) {
   const button = e.target.closest('button');
@@ -137,20 +111,17 @@ function handleProjectBannerClick(e) {
   const action = button.dataset.action;
   switch (action) {
     case 'edit':
-      renderEditForm();
+      domManager.renderEditForm();
       break;
     case 'delete': {
-      const deletedProject = deleteProject();
-      changeProjectLi(deletedProject, action);
-      console.table(listProjects());
-      console.log(getCurrentProject());
-      //renderContent(getCurrentProject());
-      clearContent();
+      projectManager.deleteProject();
+      domManager.renderProjectList(projectManager.listProjects());
+      domManager.clearContent();
       break;
     }
     case 'cancel':
       e.preventDefault();
-      toggleEditForm();
+      domManager.toggleEditForm();
       break;
     case 'accept': {
       const input = document.querySelector('.newNameInput');
@@ -160,11 +131,12 @@ function handleProjectBannerClick(e) {
         return;
       }
       const newName = input.value.trim();
-      const editedProject = editProject(newName);
-      changeProjectLi(editedProject, action, newName);
-      toggleEditForm();
-      renderProjectBanner(getCurrentProject());
-      console.table(listProjects());
+      projectManager.editProject({
+        projectName: newName,
+      });
+      domManager.renderProjectList(projectManager.listProjects());
+      domManager.toggleEditForm();
+      domManager.renderProjectBanner(projectManager.getCurrentProject());
     }
   }
 }
